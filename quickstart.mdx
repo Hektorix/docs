@@ -1,6 +1,150 @@
 ---
-title: "Quickstart"
-description: "Install Hektorix Agent under 5 minutes"
+title: "Agent Installation & Management"
+description: "The Hektorix Agent is a lightweight monitoring service that collects system information and security data from your Windows workstations. This guide covers installation, updates, and removal procedures."
 ---
 
-## Download the `.msi`
+## Quick Start
+
+<Steps>
+  <Step title="Download the installer">
+    Download the latest `HektorixInstaller.exe` from your dashboard
+  </Step>
+  <Step title="Run the installer">
+    Double-click the installer and follow the setup wizard
+  </Step>
+  <Step title="Enter your license key">
+    Provide your license key when prompted during installation
+  </Step>
+</Steps>
+
+## Installation Methods
+
+### GUI Installation
+
+1. **Download** the `HektorixInstaller.exe` file
+2. **Run** the installer by double-clicking
+3. **Follow** the installation wizard
+4. **Enter** your license key when the screen appears
+
+### Silent Installation
+
+For automated deployments, use the command line:
+
+```
+HektorixInstaller.exe LICENSE=XXXX-XXXX-XXXX-XXXX /quiet /norestart /log "%TEMP%\hektorix_install.log"
+```
+
+<Note>
+  Replace `XXXX-XXXX-XXXX-XXXX` with your actual license key 
+</Note>
+
+## System Requirements
+
+| **Operating System** | Windows 10 64-bit or later                      |
+| -------------------- | ----------------------------------------------- |
+| **Dependencies**     | Visual C\+\+ 2015-2022 (installed automatically |
+| **Permissions**      | Administrator rights required for installation  |
+
+## Installed Services
+
+The agent installs two Windows services:
+
+| Service             | Description                       | Account     | Startup Type                                      |
+| :------------------ | :-------------------------------- | :---------- | :------------------------------------------------ |
+| **HektorixAgent**   | Collects and sends telemetry data | LocalSystem | Automatic                                         |
+| **HektorixUpdater** | Downloads and applies updates     | LocalSystem | Automatic (starts every time the computer starts) |
+
+## Updates
+
+### Automatic Updates
+
+The HektorixUpdater service automatically downloads and applies updates when available.
+
+## Uninstallation
+
+### Via Windows Settings
+
+<Tabs>
+  <Tab title="Windows 11">
+    1. Open **Settings** → **Apps** → **Installed apps** 
+
+    2. Find **Hektorix Agent** 
+
+    3. Click the three dots (\*\*...\*\*) → **Uninstall**
+  </Tab>
+  <Tab title="Windows 10">
+    1. Open **Settings** → **Apps** → **Apps & features** 
+
+    2. Find **Hektorix Agent** 
+
+    3. Click **Uninstall**
+  </Tab>
+</Tabs>
+
+
+### Command Line Uninstallation
+
+```
+HektorixInstaller.exe /uninstall /quiet /norestart /log "%TEMP%\hektorix_uninstall.log"
+```
+
+<Warning>
+  Uninstalling will stop all services and remove all agent data from the system
+</Warning>
+
+## Troubleshooting
+
+### Installation Logs
+
+All operations generate detailed logs:
+
+- **Command Line**: Use `/log "C:\Path\to\logfile.log"` parameter
+- **Agent Logs**: Located in `%PROGRAMDATA%\Hektorix Agent\logs`
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Installation fails with error code">
+    Check the installation log for detailed error messages. Ensure you have administrator privileges and sufficient disk space.
+  </Accordion>
+  <Accordion title="Services not starting after installation">
+    Verify Windows services are enabled and the LocalSystem account has necessary permissions. Check Windows Event Logs for service-specific errors.
+  </Accordion>
+  <Accordion title="Agent not appearing in dashboard">
+    Agent not appearing in dashboard"\> Confirm your license key is correct and the machine has internet connectivity. The agent needs to communicate with our servers on first startup.
+  </Accordion>
+</AccordionGroup>
+
+## Mass Deployment
+
+For deploying across multiple workstations, use your preferred management tool:
+
+### Microsoft Intune
+
+```
+HektorixInstaller.exe /quiet /norestart LICENSE=YOUR-LICENSE-KEY
+```
+
+### Group Policy (GPO)
+
+Create a startup script with the silent installation command
+
+### Third-party RMM Tools
+
+Most RMM platforms support custom script deployment with the command line parameters
+
+<Tip>
+  After installation, you can safely delete the original installer file. The agent maintains all necessary components for self-repair and uninstallation.
+</Tip>
+
+---
+
+## Next Steps
+
+<Card title="Dashboard Overview" icon="sparkles">
+  Learn how to navigate your security dashboard
+</Card>
+
+<Card title="Vulnerability Management" icon="sparkles">
+  Understand how vulnerabilities are detected and prioritized
+</Card>
